@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-maroon: 122 38 58;
+    --color-saffron: 244 163 64;
+    --color-turmeric: 217 164 65;
+    --color-green: 39 103 73;
+    --color-cream: 255 248 236;
+    --color-charcoal: 36 36 36;
+  }
+
+  body {
+    @apply bg-bazaar-cream-100 text-bazaar-charcoal selection:bg-bazaar-saffron selection:text-bazaar-charcoal font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(122, 38, 58, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 38, 58, 0.4);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
