@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { Store, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
+import { BazaarLogo } from '../../components/common/BazaarLogo';
 
 export const LoginPage: React.FC = () => {
   const { login, loginWithGoogle } = useAuth();
@@ -38,7 +39,7 @@ export const LoginPage: React.FC = () => {
       <div className="max-w-md w-full bg-white dark:bg-stone-850 rounded-3xl p-8 border border-stone-200 dark:border-stone-800 shadow-xl space-y-6">
         <div className="text-center space-y-2">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-bazaar-maroon to-bazaar-saffron mx-auto flex items-center justify-center p-2 shadow-md">
-            <img src="/bazaar-logo.svg" alt="Bazaar One" className="w-full h-full object-contain" />
+            <BazaarLogo className="w-full h-full object-contain" />
           </div>
           <h2 className="text-2xl font-black font-display text-stone-900 dark:text-white">
             Welcome to Bazaar One

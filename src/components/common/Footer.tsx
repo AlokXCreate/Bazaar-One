@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Heart, MapPin, Phone, Mail, Award, CheckCircle } from 'lucide-react';
+import { BazaarLogo } from './BazaarLogo';
 
 export const Footer: React.FC = () => {
   return (
@@ -55,7 +56,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-bazaar-maroon flex items-center justify-center p-1">
-                <img src="/bazaar-logo.svg" alt="Bazaar One" className="w-full h-full object-contain" />
+                <BazaarLogo className="w-full h-full object-contain" />
               </div>
               <span className="text-2xl font-extrabold font-display text-white">
                 BAZAAR<span className="text-bazaar-saffron">ONE</span>

@@ -20,14 +20,16 @@ import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { useMarketplace } from '../../context/MarketplaceContext';
 import { UserRole } from '../../types';
+import { BazaarLogo } from './BazaarLogo';
 
 interface NavbarProps {
   onOpenCart: () => void;
   onOpenAI: () => void;
   onOpenExportModal?: () => void;
+  onShowIntro?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenAI, onOpenExportModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenAI, onOpenExportModal, onShowIntro }) => {
   const { user, role, switchUserRoleDemo, logout } = useAuth();
   const { totalItemCount } = useCart();
   const { searchQuery, setSearchQuery } = useMarketplace();
@@ -77,16 +79,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenAI, onOpenExpo
             <span>Bridging traditional Kirana & Mandi vendors with modern retail enterprises</span>
           </div>
 
-          {/* Quick Demo Role Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
-              className="flex items-center gap-1.5 bg-bazaar-maroon-700 hover:bg-bazaar-maroon-800 text-white px-2.5 py-1 rounded text-xs transition-colors border border-bazaar-maroon-500"
+          {/* Actions & Role Switcher */}
+          <div className="flex items-center gap-2">
+            {onShowIntro && (
+              <button
+                onClick={onShowIntro}
+                className="hidden sm:flex items-center gap-1 bg-bazaar-maroon-700 hover:bg-bazaar-maroon-800 text-bazaar-saffron px-2.5 py-1 rounded text-[11px] font-bold border border-bazaar-maroon-500 transition-colors"
+                title="Replay 5-second dynamic introduction"
+              >
+                <Sparkles className="w-3 h-3" />
+                <span>5s Intro</span>
+              </button>
+            )}
+
+            <Link
+              to="/gateway"
+              className="hidden sm:inline-block bg-bazaar-saffron hover:bg-bazaar-saffron/90 text-bazaar-charcoal px-2.5 py-1 rounded text-[11px] font-extrabold transition-colors shadow-sm"
             >
-              <span className="text-[10px] uppercase text-bazaar-saffron font-bold">Role:</span>
-              <span className="font-semibold capitalize">{role}</span>
-              <ChevronDown className="w-3 h-3 text-bazaar-saffron" />
-            </button>
+              Shopper / Vendor Gateway
+            </Link>
+
+            {/* Quick Demo Role Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
+                className="flex items-center gap-1.5 bg-bazaar-maroon-700 hover:bg-bazaar-maroon-800 text-white px-2.5 py-1 rounded text-xs transition-colors border border-bazaar-maroon-500"
+              >
+                <span className="text-[10px] uppercase text-bazaar-saffron font-bold">Role:</span>
+                <span className="font-semibold capitalize">{role}</span>
+                <ChevronDown className="w-3 h-3 text-bazaar-saffron" />
+              </button>
 
             {isRoleDropdownOpen && (
               <div className="absolute right-0 mt-1 w-56 bg-white dark:bg-stone-900 rounded-xl shadow-xl border border-stone-200 dark:border-stone-700 py-1.5 z-50 text-stone-800 dark:text-stone-100 animate-slide-up">
@@ -117,6 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenAI, onOpenExpo
                 })}
               </div>
             )}
+            </div>
           </div>
         </div>
 
@@ -126,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenAI, onOpenExpo
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-bazaar-maroon via-bazaar-maroon-600 to-bazaar-saffron flex items-center justify-center shadow-md p-1.5 group-hover:scale-105 transition-transform">
-                <img src="/bazaar-logo.svg" alt="Bazaar One" className="w-full h-full object-contain" />
+                <BazaarLogo className="w-full h-full object-contain" />
               </div>
               <div>
                 <span className="text-2xl font-extrabold tracking-tight font-display text-bazaar-maroon dark:text-bazaar-saffron flex items-center gap-1">
@@ -271,6 +294,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenAI, onOpenExpo
             </form>
 
             <div className="flex flex-col gap-2 font-medium text-sm">
+              <Link
+                to="/gateway"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg bg-bazaar-saffron/20 font-bold text-stone-900 dark:text-white flex items-center justify-between"
+              >
+                <span>Consumer vs Shop Owner Gateway</span>
+                <span className="text-[10px] bg-bazaar-maroon text-white px-2 py-0.5 rounded">Login / Join</span>
+              </Link>
+              {onShowIntro && (
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onShowIntro();
+                  }}
+                  className="px-3 py-2 rounded-lg text-bazaar-maroon dark:text-bazaar-saffron font-bold flex items-center gap-2 text-left"
+                >
+                  <Sparkles className="w-4 h-4 text-bazaar-saffron" />
+                  <span>Replay 5s Introduction Splash</span>
+                </button>
+              )}
               <Link
                 to="/marketplace"
                 onClick={() => setIsMobileMenuOpen(false)}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { MarketplaceProvider } from './context/MarketplaceContext';
@@ -8,6 +8,7 @@ import { PlannerProvider } from './context/PlannerContext';
 
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
+import { DynamicIntroSplash } from './components/common/DynamicIntroSplash';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { CheckoutModal } from './components/cart/CheckoutModal';
 import { BazaarAIAssistant } from './components/ai/BazaarAIAssistant';
@@ -27,11 +28,15 @@ import { CustomerDashboardPage } from './pages/customer/CustomerDashboardPage';
 import { VendorDashboardPage } from './pages/vendor/VendorDashboardPage';
 import { DeliveryPartnerDashboardPage } from './pages/delivery/DeliveryPartnerDashboardPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+import { RoleGatewayAuthPage } from './pages/auth/RoleGatewayAuthPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
 import { Product } from './types';
 
 export function AppContent() {
+  const navigate = useNavigate();
+  const [showIntro, setShowIntro] = useState<boolean>(true);
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
@@ -41,13 +46,28 @@ export function AppContent() {
   const [bargainProduct, setBargainProduct] = useState<Product | null>(null);
   const [reportProduct, setReportProduct] = useState<Product | null>(null);
 
+  const handleIntroComplete = (selectedRole?: 'customer' | 'vendor') => {
+    setShowIntro(false);
+    if (selectedRole === 'vendor') {
+      navigate('/gateway?role=vendor');
+    } else if (selectedRole === 'customer') {
+      navigate('/gateway?role=customer');
+    } else {
+      navigate('/gateway');
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-bazaar-cream-100 dark:bg-stone-950 text-bazaar-charcoal dark:text-stone-100 font-sans selection:bg-bazaar-saffron selection:text-bazaar-charcoal">
+      {/* 5-Second Dynamic Application Intro Splash */}
+      {showIntro && <DynamicIntroSplash onComplete={handleIntroComplete} />}
+
       {/* Universal Navbar */}
       <Navbar
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAI={() => setIsAIOpen(true)}
         onOpenExportModal={() => setIsExportModalOpen(true)}
+        onShowIntro={() => setShowIntro(true)}
       />
 
       {/* Main Content Router */}
@@ -123,8 +143,9 @@ export function AppContent() {
           <Route path="/vendor" element={<VendorDashboardPage />} />
           <Route path="/delivery" element={<DeliveryPartnerDashboardPage />} />
           <Route path="/admin" element={<AdminDashboardPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/gateway" element={<RoleGatewayAuthPage />} />
+          <Route path="/login" element={<RoleGatewayAuthPage />} />
+          <Route path="/register" element={<RoleGatewayAuthPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
